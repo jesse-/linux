@@ -397,6 +397,100 @@ static void dmt028vghmcmi_1a_gip_sequence(struct st7701 *st7701)
 	ST7701_DSI(st7701, 0x3A, 0x70);
 }
 
+static void gl28006bs_gip_sequence(struct st7701 *st7701) {
+	/**********************************************************************
+	 * The following GIP initialisation code is taken from the file:      *
+	 *   'BOE2.8IPS(ZV028V0Q-N10-1QP0)_ADS(480X640)_BW(Customer)-45Duty-190802.ini'
+	 * sent by G&L Electronics. It does not work at all.                  *
+	 **********************************************************************/
+	/*
+	st7701_switch_cmd_bkx(st7701, true, 3);
+	ST7701_DSI(st7701, 0xEF, 0x08);
+	msleep(10);
+
+	st7701_switch_cmd_bkx(st7701, true, 1);
+	ST7701_DSI(st7701, 0xE0, 0x00, 0x00, 0x02);
+	ST7701_DSI(st7701, 0xE1,
+				0x06, 0xA0, 0x08, 0xA0, 0x05, 0xA0, 0x07, 0xA0,
+				0x00, 0x44, 0x44);
+	ST7701_DSI(st7701, 0xE2,
+				0x20, 0x20, 0x44, 0x44, 0x96, 0xA0, 0x00, 0x00,
+				0x96, 0xA0, 0x00, 0x00);
+	ST7701_DSI(st7701, 0xE3, 0x00, 0x00, 0x22, 0x22);
+	ST7701_DSI(st7701, 0xE4, 0x44, 0x44);
+	ST7701_DSI(st7701, 0xE5,
+				0x0D, 0x91, 0x0A, 0xA0, 0x0F, 0x93, 0x0A, 0xA0,
+				0x09, 0x8D, 0x0A, 0xA0, 0x0B, 0x8F, 0x0A, 0xA0);
+	ST7701_DSI(st7701, 0xE6, 0x00, 0x00, 0x22, 0x22);
+	ST7701_DSI(st7701, 0xE7, 0x44, 0x44);
+	ST7701_DSI(st7701, 0xE8,
+				0x0C, 0x90, 0x0A, 0xA0, 0x0E, 0x92, 0x0A, 0xA0,
+				0x08, 0x8C, 0x0A, 0xA0, 0x0A, 0x8E, 0x0A, 0xA0);
+	ST7701_DSI(st7701, 0xE9, 0x36, 0x00);
+	ST7701_DSI(st7701, 0xEB, 0x00, 0x01, 0xE4, 0xE4, 0x44, 0x88, 0x40);
+	ST7701_DSI(st7701, 0xED,
+				0xFF, 0x45, 0x67, 0xFB, 0x01, 0x2A, 0xFC, 0xFF,
+				0xFF, 0xCF, 0xA2, 0x10, 0xBF, 0x76, 0x54, 0xFF);
+	ST7701_DSI(st7701, 0xEF, 0x10, 0x0D, 0x04, 0x08, 0x3F, 0x1F);
+
+	st7701_switch_cmd_bkx(st7701, false, 0);
+	ST7701_DSI(st7701, 0x11);
+	msleep(120);
+	*/
+
+	/**********************************************************************
+	 * The following GIP initialisation code is taken from the file       *
+	 * 'Initial code.txt' sent by G&L Electronics. It does not work       *
+	 * correctly: lines are skipped and duplicated and three frames       *
+	 * appear simultaneously vertically stacked.                          *
+	 **********************************************************************/
+	st7701_switch_cmd_bkx(st7701, true, 3);
+	ST7701_DSI(st7701, 0xEF, 0x08);
+	msleep(10);
+
+	st7701_switch_cmd_bkx(st7701, true, 1);
+	ST7701_DSI(st7701, 0xE0, 0x00, 0x00, 0x02);
+	ST7701_DSI(st7701, 0xE1,
+				0x06, 0xA0, 0x08, 0xA0, 0x05, 0xA0, 0x07, 0xA0,
+				0x00, 0x44, 0x44);
+	ST7701_DSI(st7701, 0xE2,
+				0x20, 0x20, 0x44, 0x44, 0x96, 0xA0, 0x00, 0x00,
+				0x96, 0xA0, 0x00, 0x00);
+	ST7701_DSI(st7701, 0xE3, 0x00, 0x00, 0x22, 0x22);
+	ST7701_DSI(st7701, 0xE4, 0x44, 0x44);
+	ST7701_DSI(st7701, 0xE5,
+				0x0D, 0x91, 0x0A, 0xA0, 0x0F, 0x93, 0x0A, 0xA0,
+				0x09, 0x8D, 0x0A, 0xA0, 0x0B, 0x8F, 0x0A, 0xA0);
+	ST7701_DSI(st7701, 0xE6, 0x00, 0x00, 0x22, 0x22);
+	ST7701_DSI(st7701, 0xE7, 0x44, 0x44);
+	ST7701_DSI(st7701, 0xE8,
+				0x0C, 0x90, 0x0A, 0xA0, 0x0E, 0x92, 0x0A, 0xA0,
+				0x08, 0x8C, 0x0A, 0xA0, 0x0A, 0x8E, 0x0A, 0xA0);
+	ST7701_DSI(st7701, 0xE9, 0x36, 0x00);
+	ST7701_DSI(st7701, 0xEB, 0x00, 0x01, 0xE4, 0xE4, 0x44, 0x88, 0x40);
+	ST7701_DSI(st7701, 0xED,
+				0xFF, 0x45, 0x67, 0xFA, 0x01, 0x2B, 0xCF, 0xFF,
+				0xFF, 0xFC, 0xB2, 0x10, 0xAF, 0x76, 0x54, 0xFF);
+	ST7701_DSI(st7701, 0xEF, 0x10, 0x0D, 0x04, 0x08, 0x3F, 0x1F);
+
+	st7701_switch_cmd_bkx(st7701, true, 3);
+	ST7701_DSI(st7701, 0xE6, 0x16);
+	ST7701_DSI(st7701, 0xE8, 0x00, 0x0E);
+
+	st7701_switch_cmd_bkx(st7701, false, 0);
+	ST7701_DSI(st7701, 0x11);
+	msleep(120);
+
+	st7701_switch_cmd_bkx(st7701, true, 3);
+	ST7701_DSI(st7701, 0xE8, 0x00, 0x0C);
+	msleep(10);
+	ST7701_DSI(st7701, 0xE8, 0x00, 0x00);
+
+	st7701_switch_cmd_bkx(st7701, false, 0);
+	ST7701_DSI(st7701, 0x11);
+	msleep(120);
+}
+
 static int st7701_prepare(struct drm_panel *panel)
 {
 	struct st7701 *st7701 = panel_to_st7701(panel);
@@ -700,6 +794,54 @@ static const struct st7701_panel_desc dmt028vghmcmi_1a_desc = {
 	.gip_sequence = dmt028vghmcmi_1a_gip_sequence,
 };
 
+static const struct drm_display_mode gl28006bs_mode = {
+	.clock		= 23000,
+
+	.hdisplay	= 480,
+	.hsync_start	= 480 + 30,
+	.hsync_end	= 480 + 30 + 4,
+	.htotal		= 480 + 30 + 4 + 30,
+
+	.vdisplay	= 640,
+	.vsync_start	= 640 + 15,
+	.vsync_end	= 640 + 15 + 5,
+	.vtotal		= 640 + 15 + 5 + 20,
+
+	.width_mm	= 43,
+	.height_mm	= 57,
+
+	.type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED,
+};
+
+static const struct st7701_panel_desc gl28006bs_desc = {
+	.mode = &gl28006bs_mode,
+	.lanes = 2,
+	.format = MIPI_DSI_FMT_RGB888,
+	.panel_sleep_delay = 5,
+
+	.pv_gamma = {
+		0x0A, 0x18, 0x1E, 0x12, 0x16, 0x0C, 0x0E, 0x0D,
+		0x0C, 0x29, 0x06, 0x14, 0x13, 0x29, 0x33, 0x1C},
+	.nv_gamma = {
+		0x0A, 0x19, 0x21, 0x0A, 0x0C, 0x00, 0x0C, 0x03,
+		0x03, 0x23, 0x01, 0x0E, 0x0C, 0x27, 0x2B, 0x1C
+	},
+	.nlinv = 1,
+	.vop_uv = 4700000,
+	.vcom_uv = 1037500,
+	.vgh_mv = 13500,
+	.vgl_mv = -11730,
+	.avdd_mv = 6600,
+	.avcl_mv = -4400,
+	.gamma_op_bias = OP_BIAS_MIDDLE,
+	.input_op_bias = OP_BIAS_MIN,
+	.output_op_bias = OP_BIAS_MIN,
+	.t2d_ns = 1600,
+	.t3d_ns = 10400,
+	.eot_en = true,
+	.gip_sequence = gl28006bs_gip_sequence,
+};
+
 static int st7701_dsi_probe(struct mipi_dsi_device *dsi)
 {
 	const struct st7701_panel_desc *desc;
@@ -777,6 +919,7 @@ static int st7701_dsi_remove(struct mipi_dsi_device *dsi)
 static const struct of_device_id st7701_of_match[] = {
 	{ .compatible = "densitron,dmt028vghmcmi-1a", .data = &dmt028vghmcmi_1a_desc },
 	{ .compatible = "techstar,ts8550b", .data = &ts8550b_desc },
+	{ .compatible = "g_l_electronics,gl28006bs", .data = &gl28006bs_desc },
 	{ }
 };
 MODULE_DEVICE_TABLE(of, st7701_of_match);
