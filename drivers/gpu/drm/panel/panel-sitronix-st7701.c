@@ -2,6 +2,8 @@
 /*
  * Copyright (C) 2019, Amarula Solutions.
  * Author: Jagan Teki <jagan@amarulasolutions.com>
+ *
+ * 19/06/2023, Jesse Hamer <jesse.hamer@albushealth.com>: Added support for the G&L Electronics GL28006BS panel.
  */
 
 #include <drm/drm_mipi_dsi.h>
@@ -398,52 +400,10 @@ static void dmt028vghmcmi_1a_gip_sequence(struct st7701 *st7701)
 }
 
 static void gl28006bs_gip_sequence(struct st7701 *st7701) {
-	/**********************************************************************
-	 * The following GIP initialisation code is taken from the file:      *
-	 *   'BOE2.8IPS(ZV028V0Q-N10-1QP0)_ADS(480X640)_BW(Customer)-45Duty-190802.ini'
-	 * sent by G&L Electronics. It does not work at all.                  *
-	 **********************************************************************/
-	/*
-	st7701_switch_cmd_bkx(st7701, true, 3);
-	ST7701_DSI(st7701, 0xEF, 0x08);
-	msleep(10);
+	/* The following sequence is derived from various sequences sent by G&L,
+	 * none of which worked individually.
+	 */
 
-	st7701_switch_cmd_bkx(st7701, true, 1);
-	ST7701_DSI(st7701, 0xE0, 0x00, 0x00, 0x02);
-	ST7701_DSI(st7701, 0xE1,
-				0x06, 0xA0, 0x08, 0xA0, 0x05, 0xA0, 0x07, 0xA0,
-				0x00, 0x44, 0x44);
-	ST7701_DSI(st7701, 0xE2,
-				0x20, 0x20, 0x44, 0x44, 0x96, 0xA0, 0x00, 0x00,
-				0x96, 0xA0, 0x00, 0x00);
-	ST7701_DSI(st7701, 0xE3, 0x00, 0x00, 0x22, 0x22);
-	ST7701_DSI(st7701, 0xE4, 0x44, 0x44);
-	ST7701_DSI(st7701, 0xE5,
-				0x0D, 0x91, 0x0A, 0xA0, 0x0F, 0x93, 0x0A, 0xA0,
-				0x09, 0x8D, 0x0A, 0xA0, 0x0B, 0x8F, 0x0A, 0xA0);
-	ST7701_DSI(st7701, 0xE6, 0x00, 0x00, 0x22, 0x22);
-	ST7701_DSI(st7701, 0xE7, 0x44, 0x44);
-	ST7701_DSI(st7701, 0xE8,
-				0x0C, 0x90, 0x0A, 0xA0, 0x0E, 0x92, 0x0A, 0xA0,
-				0x08, 0x8C, 0x0A, 0xA0, 0x0A, 0x8E, 0x0A, 0xA0);
-	ST7701_DSI(st7701, 0xE9, 0x36, 0x00);
-	ST7701_DSI(st7701, 0xEB, 0x00, 0x01, 0xE4, 0xE4, 0x44, 0x88, 0x40);
-	ST7701_DSI(st7701, 0xED,
-				0xFF, 0x45, 0x67, 0xFB, 0x01, 0x2A, 0xFC, 0xFF,
-				0xFF, 0xCF, 0xA2, 0x10, 0xBF, 0x76, 0x54, 0xFF);
-	ST7701_DSI(st7701, 0xEF, 0x10, 0x0D, 0x04, 0x08, 0x3F, 0x1F);
-
-	st7701_switch_cmd_bkx(st7701, false, 0);
-	ST7701_DSI(st7701, 0x11);
-	msleep(120);
-	*/
-
-	/**********************************************************************
-	 * The following GIP initialisation code is taken from the file       *
-	 * 'Initial code.txt' sent by G&L Electronics. It does not work       *
-	 * correctly: lines are skipped and duplicated and three frames       *
-	 * appear simultaneously vertically stacked.                          *
-	 **********************************************************************/
 	st7701_switch_cmd_bkx(st7701, true, 3);
 	ST7701_DSI(st7701, 0xEF, 0x08);
 	msleep(10);
@@ -472,6 +432,9 @@ static void gl28006bs_gip_sequence(struct st7701 *st7701) {
 				0xFF, 0x45, 0x67, 0xFA, 0x01, 0x2B, 0xCF, 0xFF,
 				0xFF, 0xFC, 0xB2, 0x10, 0xAF, 0x76, 0x54, 0xFF);
 	ST7701_DSI(st7701, 0xEF, 0x10, 0x0D, 0x04, 0x08, 0x3F, 0x1F);
+
+	// The display appears to work fine without the commands between here and
+	// the end of the function, but it seems safer to leave them in.
 
 	st7701_switch_cmd_bkx(st7701, true, 3);
 	ST7701_DSI(st7701, 0xE6, 0x16);
@@ -795,12 +758,12 @@ static const struct st7701_panel_desc dmt028vghmcmi_1a_desc = {
 };
 
 static const struct drm_display_mode gl28006bs_mode = {
-	.clock		= 23000,
+	.clock		= 24000,
 
 	.hdisplay	= 480,
 	.hsync_start	= 480 + 30,
-	.hsync_end	= 480 + 30 + 4,
-	.htotal		= 480 + 30 + 4 + 30,
+	.hsync_end	= 480 + 30 + 50,
+	.htotal		= 480 + 30 + 50 + 30,
 
 	.vdisplay	= 640,
 	.vsync_start	= 640 + 15,
