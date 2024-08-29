@@ -454,6 +454,48 @@ static void gl28006bs_gip_sequence(struct st7701 *st7701) {
 	msleep(120);
 }
 
+static void gl283tft10a_gip_sequence(struct st7701 *st7701) {
+	st7701_switch_cmd_bkx(st7701, true, 3);
+	ST7701_DSI(st7701, 0xEF, 0x08);
+
+	msleep(10);
+
+	st7701_switch_cmd_bkx(st7701, true, 0);
+	ST7701_DSI(st7701, 0xCC, 0x10);
+
+	msleep(10);
+
+	st7701_switch_cmd_bkx(st7701, true, 1);
+	ST7701_DSI(st7701, 0xC0, 0x09);
+	ST7701_DSI(st7701, 0xEE, 0x42);
+	ST7701_DSI(st7701, 0xE0, 0x00, 0x00, 0x02);
+	ST7701_DSI(st7701, 0xE1, 0x04, 0xA0, 0x06, 0xA0, 0x05, 0xA0, 0x07, 0xA0, 0x00, 0x44, 0x44);
+	ST7701_DSI(st7701, 0xE2, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
+	ST7701_DSI(st7701, 0xE3, 0x00, 0x00, 0x22, 0x22);
+	ST7701_DSI(st7701, 0xE4, 0x44, 0x44);
+	ST7701_DSI(st7701, 0xE5, 0x0c, 0x90, 0xA0, 0xA0, 0x0E, 0x92, 0xA0, 0xA0, 0x08, 0x8C, 0xA0, 0xA0, 0x0A, 0x8E, 0xA0, 0xA0);
+	ST7701_DSI(st7701, 0xE6, 0x00, 0x00, 0x22, 0x22);
+	ST7701_DSI(st7701, 0xE7, 0x44, 0x44);
+	ST7701_DSI(st7701, 0xE8, 0x0D, 0x91, 0xA0, 0xA0, 0x0F, 0x93, 0xA0, 0xA0, 0x09, 0x8D, 0xA0, 0xA0, 0x0B, 0x8F, 0xA0, 0xA0);
+	ST7701_DSI(st7701, 0xEB, 0x00, 0x00, 0xE4, 0xE4, 0x44, 0x00, 0x40);
+	ST7701_DSI(st7701, 0xED, 0xFF, 0xF5, 0x47, 0x6F, 0x0B, 0xA1, 0xAB, 0xFF, 0xFF, 0xBA, 0x1A, 0xB0, 0xF6, 0x74, 0x5F, 0xFF);
+	ST7701_DSI(st7701, 0xEF, 0x08, 0x08, 0x08, 0x40, 0x3F, 0x64);
+
+	st7701_switch_cmd_bkx(st7701, true, 3);
+	ST7701_DSI(st7701, 0xE6, 0x16, 0x7C);
+	ST7701_DSI(st7701, 0xE8, 0x00, 0x0E);
+
+	st7701_switch_cmd_bkx(st7701, false, 0);
+	ST7701_DSI(st7701, 0x11);
+	ST7701_DSI(st7701, 0x35, 0x00);
+	msleep(120);
+
+	st7701_switch_cmd_bkx(st7701, true, 3);
+	ST7701_DSI(st7701, 0xE8, 0x00, 0x0C);
+	msleep(10);
+	ST7701_DSI(st7701, 0xE8, 0x00, 0x00);
+}
+
 static int st7701_prepare(struct drm_panel *panel)
 {
 	struct st7701 *st7701 = panel_to_st7701(panel);
@@ -805,6 +847,55 @@ static const struct st7701_panel_desc gl28006bs_desc = {
 	.gip_sequence = gl28006bs_gip_sequence,
 };
 
+static const struct drm_display_mode gl283tft10a_mode = {
+	.clock		= 24000,
+
+	.hdisplay	= 480,
+	.hsync_start	= 480 + 16,
+	.hsync_end	= 480 + 16 + 32,
+	.htotal		= 480 + 16 + 32 + 16,
+
+	.vdisplay	= 640,
+	.vsync_start	= 640 + 2,
+	.vsync_end	= 640 + 2 + 5,
+	.vtotal		= 640 + 2 + 5 + 16,
+
+	.width_mm	= 43,
+	.height_mm	= 57,
+
+	.type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED,
+};
+
+static const struct st7701_panel_desc gl283tft10a_desc = {
+	.mode = &gl283tft10a_mode,
+	.lanes = 2,
+	.format = MIPI_DSI_FMT_RGB888,
+	.panel_sleep_delay = 5,
+
+	.pv_gamma = {
+		0x00,0x10,0x17,0x0D,0x11,0x06,0x05,0x08,
+		0x07,0x1F,0x04,0x11,0x0E,0x29,0x30,0x1F
+	},
+	.nv_gamma = {
+		0x00,0x0D,0x14,0x0E,0x11,0x06,0x04,0x08,
+		0x08,0x20,0x05,0x13,0x13,0x26,0x30,0x1F
+	},
+	.nlinv = 7,
+	.vop_uv = 4800000,
+	.vcom_uv = 1512500,
+	.vgh_mv = 12500,
+	.vgl_mv = -7910,
+	.avdd_mv = 6600,
+	.avcl_mv = -4400,
+	.gamma_op_bias = OP_BIAS_MIDDLE,
+	.input_op_bias = OP_BIAS_MIN,
+	.output_op_bias = OP_BIAS_MIN,
+	.t2d_ns = 0,
+	.t3d_ns = 4000,
+	.eot_en = true,
+	.gip_sequence = gl283tft10a_gip_sequence,
+};
+
 static int st7701_dsi_probe(struct mipi_dsi_device *dsi)
 {
 	const struct st7701_panel_desc *desc;
@@ -883,6 +974,7 @@ static const struct of_device_id st7701_of_match[] = {
 	{ .compatible = "densitron,dmt028vghmcmi-1a", .data = &dmt028vghmcmi_1a_desc },
 	{ .compatible = "techstar,ts8550b", .data = &ts8550b_desc },
 	{ .compatible = "g_l_electronics,gl28006bs", .data = &gl28006bs_desc },
+	{ .compatible = "g_l_electronics,gl283tft10a", .data = &gl283tft10a_desc },
 	{ }
 };
 MODULE_DEVICE_TABLE(of, st7701_of_match);
