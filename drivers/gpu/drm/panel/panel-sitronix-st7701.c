@@ -847,27 +847,8 @@ static const struct st7701_panel_desc gl28006bs_desc = {
 	.gip_sequence = gl28006bs_gip_sequence,
 };
 
-static const struct drm_display_mode gl283tft10a_mode = {
-	.clock		= 24000,
-
-	.hdisplay	= 480,
-	.hsync_start	= 480 + 16,
-	.hsync_end	= 480 + 16 + 32,
-	.htotal		= 480 + 16 + 32 + 16,
-
-	.vdisplay	= 640,
-	.vsync_start	= 640 + 2,
-	.vsync_end	= 640 + 2 + 5,
-	.vtotal		= 640 + 2 + 5 + 16,
-
-	.width_mm	= 43,
-	.height_mm	= 57,
-
-	.type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED,
-};
-
 static const struct st7701_panel_desc gl283tft10a_desc = {
-	.mode = &gl283tft10a_mode,
+	.mode = &gl28006bs_mode,  // Uses the same video mode as the GL28006BS (apparently).
 	.lanes = 2,
 	.format = MIPI_DSI_FMT_RGB888,
 	.panel_sleep_delay = 5,
