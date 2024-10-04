@@ -4,6 +4,7 @@
  * Author: Jagan Teki <jagan@amarulasolutions.com>
  *
  * 19/06/2023, Jesse Hamer <jesse.hamer@albushealth.com>: Added support for the G&L Electronics GL28006BS panel.
+ * 30/08/2024, Jesse Hamer <jesse.hamer@albushealth.com>: Added support for the G&L Electronics GL283TFT10A panel.
  */
 
 #include <drm/drm_mipi_dsi.h>
